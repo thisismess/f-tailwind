@@ -205,3 +205,116 @@ describe(':slotted() without <slot> — warns', () => {
         expect(slottedWarns.length).toBe(0);
     });
 });
+
+describe('@apply bug — sibling and compound selectors work correctly', () => {
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+        warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+    afterEach(() => {
+        warnSpy.mockRestore();
+    });
+
+    it('adjacent sibling selector applies to second .parent only', () => {
+        const code = `<template>
+  <div>
+    <div class="parent">first</div>
+    <div class="parent">second</div>
+  </div>
+</template>
+
+<style lang="f-tailwind">
+& {
+  > .parent { p-3 bg-green-600 }
+  > .parent + .parent { border-t-2 border-yellow-400 }
+}
+</style>`;
+        const r = t(code)!;
+        // Both parents get base classes
+        const matches = (r.code.match(/bg-green-600/g) || []).length;
+        expect(matches).toBe(2);
+        // Only the second parent gets the border
+        const borderMatches = (r.code.match(/border-t-2/g) || []).length;
+        expect(borderMatches).toBe(1);
+        // The second div should have both base + border classes
+        expect(r.code).toContain('class="parent p-3 bg-green-600 border-t-2 border-yellow-400"');
+    });
+
+    it('compound class selector .parent.is-current targets correctly', () => {
+        const code = `<template>
+  <div>
+    <div class="parent">plain</div>
+    <div class="parent is-current">current</div>
+  </div>
+</template>
+
+<style lang="f-tailwind">
+& {
+  > .parent { p-3 bg-green-600 }
+  > .parent.is-current { bg-orange-500 }
+}
+</style>`;
+        const r = t(code)!;
+        // First parent: green only
+        expect(r.code).toContain('class="parent p-3 bg-green-600"');
+        // Second parent: green + orange (both rules match)
+        expect(r.code).toContain('class="parent is-current p-3 bg-green-600 bg-orange-500"');
+    });
+
+    it('child selector inside parent targets nested element', () => {
+        const code = `<template>
+  <div>
+    <div class="parent">
+      <div class="child">nested</div>
+    </div>
+  </div>
+</template>
+
+<style lang="f-tailwind">
+& {
+  > .parent {
+    p-3 bg-green-600
+    > .child { bg-red-600 p-2 }
+  }
+}
+</style>`;
+        const r = t(code)!;
+        expect(r.code).toContain('class="parent p-3 bg-green-600"');
+        expect(r.code).toContain('class="child bg-red-600 p-2"');
+    });
+
+    it('all three combined — the full @apply bug scenario', () => {
+        const code = `<template>
+  <div>
+    <div class="parent">
+      <div class="child">red</div>
+    </div>
+    <div class="parent is-current">
+      <div class="child">red</div>
+    </div>
+  </div>
+</template>
+
+<style lang="f-tailwind">
+& {
+  > .parent {
+    p-3 bg-green-600
+    > .child { bg-red-600 p-2 }
+  }
+  > .parent + .parent { border-t-2 border-yellow-400 }
+  > .parent.is-current { bg-orange-500 }
+}
+</style>`;
+        const r = t(code)!;
+        // First parent: base classes only
+        expect(r.code).toContain('class="parent p-3 bg-green-600"');
+        // Second parent: base + sibling border + compound orange
+        expect(r.code).toContain('border-t-2');
+        expect(r.code).toContain('border-yellow-400');
+        expect(r.code).toContain('bg-orange-500');
+        // Both children get red
+        const redMatches = (r.code.match(/bg-red-600/g) || []).length;
+        expect(redMatches).toBe(2);
+    });
+});
