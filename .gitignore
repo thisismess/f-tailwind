@@ -1,0 +1,22 @@
+node_modules
+dist
+coverage
+*.tsbuildinfo
+
+# Nuxt playground
+playground/.nuxt
+playground/.output
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude

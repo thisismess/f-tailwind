@@ -1,0 +1,66 @@
+{
+    "name": "f-tailwind",
+    "version": "0.1.0",
+    "description": "Write Tailwind CSS without polluting your Vue templates",
+    "license": "MIT",
+    "author": "jshedd",
+    "keywords": [
+        "nuxt",
+        "nuxt-module",
+        "tailwindcss",
+        "tailwind",
+        "vue",
+        "css",
+        "vite"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "bin": {
+        "f-tailwind-migrate": "./dist/cli/migrate.mjs"
+    },
+    "files": [
+        "dist"
+    ],
+    "type": "module",
+    "main": "./dist/module.mjs",
+    "types": "./dist/types.d.mts",
+    "exports": {
+        ".": {
+            "types": "./dist/types.d.mts",
+            "import": "./dist/module.mjs"
+        },
+        "./shims": {
+            "types": "./dist/shims.d.mts"
+        }
+    },
+    "scripts": {
+        "build": "nuxt-module-build build",
+        "dev": "nuxi dev playground",
+        "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "format": "oxfmt",
+        "format:check": "oxfmt --check"
+    },
+    "dependencies": {
+        "@nuxt/kit": "^3.0.0",
+        "magic-string": "^0.30.0",
+        "postcss": "^8.0.0",
+        "postcss-selector-parser": "^7.1.1"
+    },
+    "devDependencies": {
+        "@nuxt/module-builder": "^1.0.0",
+        "@tailwindcss/postcss": "^4.2.1",
+        "@tailwindcss/vite": "^4.2.1",
+        "@types/node": "^25.3.0",
+        "@vue/compiler-sfc": "^3.4.0",
+        "nuxt": "^3.0.0",
+        "oxfmt": "^0.35.0",
+        "tailwindcss": "^4.2.1",
+        "vitest": "^2.0.0"
+    },
+    "peerDependencies": {
+        "@vue/compiler-sfc": "^3.4.0"
+    }
+}
