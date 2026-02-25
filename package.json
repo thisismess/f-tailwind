@@ -2,20 +2,17 @@
     "name": "f-tailwind",
     "version": "0.1.0",
     "description": "Write Tailwind CSS without polluting your Vue templates",
-    "license": "MIT",
-    "author": "jshedd",
     "keywords": [
+        "css",
         "nuxt",
         "nuxt-module",
-        "tailwindcss",
         "tailwind",
-        "vue",
-        "css",
-        "vite"
+        "tailwindcss",
+        "vite",
+        "vue"
     ],
-    "engines": {
-        "node": ">=18"
-    },
+    "license": "MIT",
+    "author": "jshedd",
     "bin": {
         "f-tailwind-migrate": "./dist/cli/migrate.mjs"
     },
@@ -62,5 +59,8 @@
     },
     "peerDependencies": {
         "@vue/compiler-sfc": "^3.4.0"
+    },
+    "engines": {
+        "node": ">=18"
     }
 }
