@@ -15,14 +15,14 @@ We wrote a lot of blog posts about it. So very, very many blog posts.
 
 Conference talks were given. Guys in beanies got famous and Microsoft got yelled at a lot.
 
-And eventually, we seperated concerns. We had semantic HTML and maintainable stylesheets and JavaScript in seperate files.
+And eventually, we separated concerns. We had semantic HTML and maintainable stylesheets and JavaScript in separate files.
 
 But then in 2017, some guy said "what if we put all the styles back in the HTML?" and a mass of people said "yes, absolutely, this is the way." We reinvented inline styles, but
 worse and weirder and slower to write — because `style="color: red"` is readable and
 `class="flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"`
 requires several round-trips to a documentation website.
 
-And tooling! An entire ecosystem of editor plugins, integrations, sorters, liters and other words just to manage this mess.
+And tooling! An entire ecosystem of editor plugins, integrations, sorters, linters and other words just to manage this mess.
 
 We had to write software to organize the chaos of another piece of software because other software was too hard for us to write while we were writing software.
 
@@ -34,7 +34,7 @@ rules that are causing your A tags to be bolded because some intern somewhere ne
 And if I were using any framework other than Vue, that'd all be super-useful stuff. Game-changing stuff. Stuff that makes this entire rant seem like the weirdest of weird hills for
 a grumpy-old front-end dev to immolate himself on.
 
-But I use Vue. Vue is the most perfect front-end framework. Vue has single-file components. Those single-file compontents have a powerful `<style>` system with scoped styles and
+But I use Vue. Vue is the most perfect front-end framework. Vue has single-file components. Those single-file components have a powerful `<style>` system with scoped styles and
 CSS nesting. They're self-contained and self-documenting. They're (mostly) easy to share between code-bases.
 
 Vue components are a gift, granted from up on high by our lord and savior Evan You, and I want to use them as intended because as intended they are perfect and y'all are just weird
@@ -68,10 +68,9 @@ bytes. All those handy Tailwind optimizations that give you a lower LCP and FCP 
 
 And you can absolutely still use Tailwind and toss in a bunch of class names on top of other class names if you really want.
 
-And no, this isn't `@apply`. `@apply` injects Tailwind's generated CSS into your stylesheet — so now you've got real CSS that the browser has to parse and apply at runtime, which
-defeats the entire point of utility CSS. You lose the deduplication, you lose the tiny bundle, you lose the performance wins. Even
+And no, this isn't just `@apply`. `@apply` just injects generated CSS into your stylesheet. You lose the deduplication, you lose the tiny bundle, you lose the performance wins. Even
 [the creator of Tailwind says](https://xcancel.com/adamwathan/status/1559250403547652097) if he started over, `@apply` wouldn't exist. f-tailwind compiles away completely — no
-generated CSS, no runtime cost. The output is just utility classes on elements, exactly like hand-written Tailwind.
+generated CSS, no runtime cost. The output is just utility classes on elements, exactly like hand-written Tailwind. (But, yes, f-tailwind does use `@apply` internally for two edge cases — pseudo-elements and `:slotted()` — because there's no DOM element to put a class on. I'm not happy about it, but I was less happy when it didn't work at all.)
 
 Sure, it's kinda "Tailwind, but with a lot of extra steps".
 
