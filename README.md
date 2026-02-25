@@ -1,5 +1,9 @@
 # f-tailwind
 
+[![npm version](https://img.shields.io/npm/v/f-tailwind?color=blue)](https://www.npmjs.com/package/f-tailwind)
+[![CI](https://img.shields.io/github/actions/workflow/status/jshedd/f-tailwind/ci.yml?label=CI)](https://github.com/jshedd/f-tailwind/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/f-tailwind)](https://github.com/jshedd/f-tailwind/blob/main/LICENSE)
+
 f-tailwind is a Nuxt module that lets you write Tailwind utility classes in a `<style>` block using CSS-nesting syntax instead of cramming them into `class=""` attributes.
 
 ## Why
@@ -63,6 +67,10 @@ normal `<style scoped>` block that Vite processes like usual. By the time Vue an
 bytes. All those handy Tailwind optimizations that give you a lower LCP and FCP score? Those still work just fine.
 
 And you can absolutely still use Tailwind and toss in a bunch of class names on top of other class names if you really want.
+
+And no, this isn't `@apply`. `@apply` injects Tailwind's generated CSS into your stylesheet — so now you've got real CSS that the browser has to parse and apply at runtime, which
+defeats the entire point of utility CSS. You lose the deduplication, you lose the tiny bundle, you lose the performance wins. Even [the creator of Tailwind says](https://xcancel.com/adamwathan/status/1559250403547652097) if he started over, `@apply` wouldn't exist.
+f-tailwind compiles away completely — no generated CSS, no runtime cost. The output is just utility classes on elements, exactly like hand-written Tailwind.
 
 Sure, it's kinda "Tailwind, but with a lot of extra steps".
 
